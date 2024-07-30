@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Contact Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Contact Requests</h1>
+    <ul>
+        {% for key, contact in contacts.items() %}
+        <li>
+            <strong>Name:</strong> {{ contact.name }}<br>
+            <strong>Email:</strong> {{ contact.email }}<br>
+            <strong>Message:</strong> {{ contact.message }}<br>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

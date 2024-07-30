@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easter Egg - Kibo Meet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/home">Home</a>
+            <a href="#about">About</a>
+            <a href="#instructors">Instructors</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('easter_egg1') }}">Easter Egg</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Congratulations!</h1>
+            <p>You've found the super hidden and the actual Easter egg! Here's a more funny message just for you:</p>
+            <strong>BOMBOCLAT</strong>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Kibo Meet. All rights reserved.</p>
+    </footer>
+</body>
+</html>

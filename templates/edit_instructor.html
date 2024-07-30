@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Instructor - Kibo Meet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="#about">About</a>
+            <a href="#instructors">Instructors</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Edit Instructor</h1>
+            <form method="post" action="{{ url_for('edit_instructor', id=id) }}">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="{{ instructor.name }}" required><br>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required>{{ instructor.description }}</textarea><br>
+                <input type="submit" value="Update Instructor">
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Kibo Meet. All rights reserved.</p>
+    </footer>
+</body>
+</html>

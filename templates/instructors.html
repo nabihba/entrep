@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h1>Instructors</h1>
+    <form method="post" action="{{ url_for('instructors') }}">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br>
+        <input type="submit" value="Add Instructor">
+    </form>
+    <h2>All Instructors</h2>
+    <ul>
+        {% for key, instructor in instructors.items() %}
+        <li>
+            <strong>{{ instructor.name }}</strong>: {{ instructor.description }}
+            <a href="{{ url_for('edit_instructor', id=key) }}">Edit</a>
+            <form action="{{ url_for('delete_instructor', id=key) }}" method="post" style="display:inline;">
+                <input type="submit" value="Delete">
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Kibo Meet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Your Profile</h1>
+            <h2>Your Requests</h2>
+
+            <ul>
+                {% for key, request in contacts.items() %}
+                <li>
+                    <strong>{{ key }}</strong>: {{request}}</strong>
+                    <a href="/update_request/{{request_id}}">Edit</a> 
+                    <a href="{{ url_for('delete_request', request_id=request_id) }}">Delete</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Kibo Meet. All rights reserved.</p>
+    </footer>
+</body>
+</html>

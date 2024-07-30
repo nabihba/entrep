@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Kibo Meet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('home') }}#about">About</a>
+            <a href="{{ url_for('home') }}#instructors">Instructors</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Sign Up</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Sign Up</h1>
+            <form method="post" action="{{ url_for('register') }}">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <input type="submit" value="Sign Up">
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Kibo Meet. All rights reserved.</p>
+    </footer>
+</body>
+</html>
