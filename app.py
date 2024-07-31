@@ -42,16 +42,17 @@ def profile():
     
     user_id = login_session['user']['localId']
     user_data = db.child("users").child(user_id).get().val()
-    keys = db.child("contacts").get().val()
+    keys = db.child("contacts").child(user_id).get().val()
     
-    your_requests = {}
-    if keys:
-        for key, val in keys.items():
-            if key == user_id:
-                your_requests = val
-                break
-    
-    return render_template('profile.html', user=user_data, contacts=your_requests)
+    # your_requests = {}
+    # if keys:
+    #     for key, val in keys.items():
+    #         if key == user_id:
+    #             uid = val
+    #             break
+
+    return render_template('profile.html', contacts=keys, user=user_data, uid = login_session['user']['localId'])
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -75,22 +76,27 @@ def home():
         instructors = {}
     return render_template('index.html', instructors=instructors)
 
-@app.route('/update_request/<request_id>', methods=['GET', 'POST'])
-def update_request(request_id):
+@app.route('/update_request/<uid>/<key>', methods=['GET', 'POST'])
+def update_request(uid, key):
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
         message = request.form['message']
-        db.child("contacts").child(request_id).update({"name": name, "email": email, "message": message})
+
+        db.child("contacts").child(uid).child(key).update({"name": name, "email": email, "message": message})
         return redirect(url_for('profile'))
-    
-    request_data = db.child("contacts").child(request_id).get().val()
-    return render_template('update_request.html', request_data=request_data, request_id=request_id)
+
+    request_data = db.child("contacts").child(uid).child(key).get().val()
+
+    name_before = request_data['name']
+    email_before = request_data['email']
+    message_before=request_data['message']
+    return render_template('update_request.html', key = key,user_id = uid,  request_data=request_data, name = name_before, email = email_before, message = message_before)
 
 
-@app.route('/delete_request/<request_id>')
-def delete_request(request_id):
-    db.child("contacts").child(request_id).remove()
+@app.route('/delete_request/<uid>/<key>')
+def delete_request(uid, key):
+    db.child("contacts").child(uid).child(key).remove()
     return redirect(url_for('profile'))
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -100,7 +106,7 @@ def contact():
         email = request.form['email']
         message = request.form['message']
         UID = login_session['user']['localId']
-        db.child("contacts").child(UID).set({"name": name, "email": email, "message": message})
+        db.child("contacts").child(UID).push({"name": name, "email": email, "message": message})
         return redirect(url_for('home'))
     return render_template('contact.html')
 
@@ -114,33 +120,22 @@ def easter_egg1():
 
 @app.route('/admin')
 def admin():
-    contacts = db.child("contacts").get().val()
-    if not contacts:
-        contacts = {}
+    all_contacts = db.child("contacts").get().val()
+    contacts = {}
+
+    if all_contacts:
+        for uid, user_contacts in all_contacts.items():
+            for key, contact in user_contacts.items():
+                contacts[key] = {
+                    'uid': uid,
+                    'name': contact.get('name'),
+                    'email': contact.get('email'),
+                    'message': contact.get('message')
+                }
+    
     return render_template('admin.html', contacts=contacts)
 
-@app.route('/add_instructor', methods=['GET', 'POST'])
-def add_instructor():
-    name = request.form['name']
-    description = request.form['description']
-    instructor = {"name": name, "description": description}
-    db.child("instructors").push(instructor)
-    return redirect(url_for('home'))
 
-@app.route('/edit_instructor/<id>', methods=['GET', 'POST'])
-def edit_instructor(id):
-    if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        db.child("instructors").child(id).update({"name": name, "description": description})
-        return redirect(url_for('home'))
-    instructor = db.child("instructors").child(id).get().val()
-    return render_template('edit_instructor.html', instructor=instructor, id=id)
-
-@app.route('/delete_instructor/<id>', methods=['GET', 'POST'])
-def delete_instructor(id):
-    db.child("instructors").child(id).remove()
-    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
